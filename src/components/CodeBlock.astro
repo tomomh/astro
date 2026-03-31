@@ -1,0 +1,61 @@
+---
+interface Props {
+  language?: string;
+  filename?: string;
+}
+
+const { language = 'text', filename } = Astro.props;
+---
+
+<div class="code-block">
+  {filename && (
+    <div class="header">
+      <span class="filename">{filename}</span>
+      <span class="language">{language}</span>
+    </div>
+  )}
+  <pre class={`language-${language}`}><code><slot /></code></pre>
+</div>
+
+<style>
+  .code-block {
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #282a36;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #1e1f29;
+    border-bottom: 1px solid #44475a;
+  }
+
+  .filename {
+    color: #f8f8f2;
+    font-size: 0.875rem;
+    font-family: monospace;
+  }
+
+  .language {
+    color: #6272a4;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  pre {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #f8f8f2;
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+title: "Integrating Astro with Sanity CMS"
+description: "A complete guide to building content-driven websites with Astro and Sanity"
+pubDate: 2024-01-20
+author: "Tom"
+tags: ["astro", "sanity", "cms", "headless"]
+image:
+  url: "/images/astro-sanity.jpg"
+  alt: "Astro and Sanity Integration"
+---
+
+import Callout from '../../components/Callout.astro';
+
+# Integrating Astro with Sanity CMS
+
+Astro and Sanity make a powerful combination for building modern, content-driven websites.
+
+<Callout type="info">
+  This guide assumes you have basic knowledge of both Astro and Sanity.
+</Callout>
+
+## Why Astro + Sanity?
+
+| Feature | Astro | Sanity |
+|---------|-------|--------|
+| Performance | Zero JS by default | Fast API |
+| Flexibility | Multi-framework | Customizable Studio |
+| Developer Experience | Simple & intuitive | Real-time collaboration |
+
+## Installation
+
+First, install the Sanity client:
+
+```bash
+npm install @sanity/client @sanity/image-url
+```
+
+## Setting Up the Client
+
+Create a Sanity client configuration:
+
+```typescript
+// src/lib/sanity.ts
+import { createClient } from '@sanity/client';
+
+export const client = createClient({
+  projectId: 'your-project-id',
+  dataset: 'production',
+  useCdn: true,
+  apiVersion: '2024-01-01',
+});
+```
+
+## Fetching Content
+
+Use GROQ queries to fetch content:
+
+```typescript
+const posts = await client.fetch(`
+  *[_type == "post"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt
+  }
+`);
+```
+
+<Callout type="tip">
+  Use the Vision plugin in Sanity Studio to test your GROQ queries before implementing them.
+</Callout>
+
+## Best Practices
+
+1. **Use TypeScript** - Type your Sanity schemas for better DX
+2. **Optimize Images** - Use `@sanity/image-url` for responsive images
+3. **Cache Wisely** - Enable CDN for production builds
+4. **Preview Mode** - Set up draft previews for content editors
+
+## Conclusion
+
+Astro and Sanity together provide a modern, performant stack for content websites.

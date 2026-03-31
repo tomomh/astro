@@ -1,0 +1,231 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const base = import.meta.env.BASE_URL;
+
+const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${post.data.title} | Posts`} description={post.data.description}>
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        {post.data.tags.length > 0 && (
+          <div class="tags">
+            {post.data.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+        <h1>{post.data.title}</h1>
+        <p class="description">{post.data.description}</p>
+        <div class="meta">
+          <span class="author">By {post.data.author}</span>
+          <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+        </div>
+      </div>
+    </header>
+
+    {post.data.image && (
+      <div class="featured-image">
+        <img src={post.data.image.url} alt={post.data.image.alt} />
+      </div>
+    )}
+
+    <div class="post-content">
+      <div class="container">
+        <div class="prose">
+          <Content />
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-footer">
+      <div class="container">
+        <a href={`${base}posts`} class="back-link">&larr; Back to Posts</a>
+      </div>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .tags {
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    display: inline-block;
+    background: #64b5f6;
+    color: #1a1a2e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0 0.25rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .description {
+    color: #e0e0e0;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    color: #b0b0b0;
+    font-size: 0.875rem;
+  }
+
+  .featured-image {
+    max-width: 1000px;
+    margin: -2rem auto 0;
+    padding: 0 1rem;
+  }
+
+  .featured-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .post-content {
+    padding: 3rem 0;
+  }
+
+  .prose {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #333;
+  }
+
+  .prose :global(h1),
+  .prose :global(h2),
+  .prose :global(h3) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #1a1a2e;
+  }
+
+  .prose :global(h1) {
+    font-size: 2rem;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.5rem;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.25rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(code) {
+    background: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.875em;
+  }
+
+  .prose :global(pre) {
+    background: #282a36;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+    color: #f8f8f2;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 4px solid #64b5f6;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: #666;
+    font-style: italic;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .prose :global(th) {
+    background: #f5f5f5;
+  }
+
+  .post-footer {
+    padding: 2rem 0;
+    border-top: 1px solid #eee;
+  }
+
+  .back-link {
+    color: #1a1a2e;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; {currentYear} Astro + Sanity Demo. All rights reserved.</p>
+    <p class="tech">
+      Built with <a href="https://astro.build" target="_blank">Astro</a> &
+      <a href="https://sanity.io" target="_blank">Sanity</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    padding: 2rem 0;
+    margin-top: auto;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .tech {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .tech a {
+    color: #64b5f6;
+    text-decoration: none;
+  }
+
+  .tech a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,21 @@
+{
+  "name": "astro-sanity-demo",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@astrojs/mdx": "^3.1.0",
+    "@portabletext/react": "^6.0.3",
+    "@sanity/client": "^6.21.0",
+    "@sanity/image-url": "^1.0.2",
+    "astro": "^4.15.0",
+    "typescript": "^5.5.4"
+  }
+}

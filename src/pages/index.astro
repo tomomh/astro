@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { client, queries } from '../lib/sanity';
+
+const base = import.meta.env.BASE_URL;
+
+const posts = await client.fetch(queries.allPosts);
+const recentPosts = posts.slice(0, 3);
+---
+
+<BaseLayout title="Home | Astro + Sanity Demo">
+  <section class="hero">
+    <div class="container">
+      <h1>Welcome to Astro + Sanity Demo</h1>
+      <p>A modern blog built with Astro framework and Sanity CMS</p>
+      <a href={`${base}blog`} class="cta-button">View All Posts</a>
+    </div>
+  </section>
+
+  <section class="recent-posts">
+    <div class="container">
+      <h2>Recent Posts</h2>
+      {posts.length === 0 ? (
+        <p class="no-posts">No posts yet. Add some content in Sanity Studio!</p>
+      ) : (
+        <div class="posts-grid">
+          {recentPosts.map((post: any) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    padding: 6rem 0;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero p {
+    font-size: 1.25rem;
+    color: #e0e0e0;
+    margin-bottom: 2rem;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: #64b5f6;
+    color: #1a1a2e;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+
+  .cta-button:hover {
+    background: #90caf9;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .recent-posts {
+    padding: 4rem 0;
+    background: #f5f5f5;
+  }
+
+  .recent-posts h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #1a1a2e;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .no-posts {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
+</style>

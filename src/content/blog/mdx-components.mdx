@@ -1,0 +1,85 @@
+---
+title: "Using MDX Components in Astro"
+description: "Learn how to create and use interactive MDX components"
+pubDate: 2024-01-25
+author: "Tom"
+tags: ["mdx", "astro", "components"]
+---
+
+import Counter from '../../components/Counter.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+# Using MDX Components in Astro
+
+MDX allows you to use JSX components directly in your Markdown content.
+
+## What is MDX?
+
+MDX is Markdown for the component era. It lets you write JSX in your Markdown documents.
+
+## Basic Example
+
+Here's a simple counter component embedded in MDX:
+
+<Counter client:load />
+
+## Code Highlighting
+
+You can create custom code block components:
+
+<CodeBlock language="javascript" filename="example.js">
+{`function greet(name) {
+  return \`Hello, \${name}!\`;
+}
+
+console.log(greet('World'));`}
+</CodeBlock>
+
+## Creating MDX Components
+
+### 1. Create the Component
+
+```astro
+---
+// src/components/Alert.astro
+interface Props {
+  type?: 'info' | 'warning' | 'error';
+}
+
+const { type = 'info' } = Astro.props;
+---
+
+<div class={`alert alert-${type}`}>
+  <slot />
+</div>
+
+<style>
+  .alert { padding: 1rem; border-radius: 4px; }
+  .alert-info { background: #e3f2fd; }
+  .alert-warning { background: #fff3e0; }
+  .alert-error { background: #ffebee; }
+</style>
+```
+
+### 2. Import and Use in MDX
+
+```mdx
+import Alert from '../components/Alert.astro';
+
+<Alert type="warning">
+  This is a warning message!
+</Alert>
+```
+
+## Benefits of MDX
+
+- **Reusable Components** - Create once, use everywhere
+- **Interactive Content** - Add dynamic elements to static pages
+- **Type Safety** - Full TypeScript support
+- **Markdown Simplicity** - Write content naturally
+
+## Tips
+
+1. Use `client:load` for interactive components
+2. Keep components simple and focused
+3. Leverage Astro's partial hydration
