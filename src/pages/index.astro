@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { client, queries } from '../lib/sanity';
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const posts = await client.fetch(queries.allPosts);
 const recentPosts = posts.slice(0, 3);
@@ -14,7 +14,7 @@ const recentPosts = posts.slice(0, 3);
     <div class="container">
       <h1>Welcome to Astro + Sanity Demo</h1>
       <p>A modern blog built with Astro framework and Sanity CMS</p>
-      <a href={`${base}blog`} class="cta-button">View All Posts</a>
+      <a href={`${base}/blog`} class="cta-button">View All Posts</a>
     </div>
   </section>
 

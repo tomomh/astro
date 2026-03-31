@@ -18,7 +18,7 @@ if (!post) {
   return Astro.redirect('/404');
 }
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const formattedDate = post.publishedAt
   ? new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -80,7 +80,7 @@ const formattedDate = post.publishedAt
 
     <footer class="post-footer">
       <div class="container">
-        <a href={`${base}blog`} class="back-link">&larr; Back to Blog</a>
+        <a href={`${base}/blog`} class="back-link">&larr; Back to Blog</a>
       </div>
     </footer>
   </article>
